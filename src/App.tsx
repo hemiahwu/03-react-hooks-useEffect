@@ -1,29 +1,11 @@
-import { useState, useEffect } from "react";
-
 /**
- * useEffect 网络请求
- *
- * 特别注意:
- * useEffect的回调函数使用async是无效的.
- * 因为useEffect的返回值只能是undefine或清除函数
- * 然后async函数总是返回一个promise
+ * useEffect 自定义hooks
  */
-
-const url = "http://jsonplaceholder.typicode.com/users";
+import useFetch from "./hooks/useFetch";
 
 function App() {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(url);
-      const result = await response.json();
-
-      setData(result);
-    };
-
-    fetchData();
-  }, []);
+  const url = "http://jsonplaceholder.typicode.com/posts";
+  const data = useFetch(url);
 
   return (
     <>
