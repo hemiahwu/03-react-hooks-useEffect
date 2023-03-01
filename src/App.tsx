@@ -1,41 +1,30 @@
 import { useState, useEffect } from "react";
 
-/** useEffect的第二个参数
- * 1.参数是空数组, 那么useEffect仅在初始化执行
- * 2.第二个参数（依赖项数组）来控制useEffect的触发时机
- * 3.多个useEffect 依次执行
+/** useEffect 的返回值
+ * 1.return语句的作用是清理effect中的副作用，防止出现内存泄漏等问题
  */
 
 function App() {
-  const [value, setValue] = useState<number>(0);
+  const [size, setSize] = useState(window.innerWidth);
 
-  // 无关的状态
-  const [count, setCount] = useState<number>(0);
-
-  // 异步执行
-  useEffect(() => {
-    console.log("useEffect 被调用");
-    document.title = `您有(${value})条新的消息`;
-  }, [value]); // 仅在 value 更改时更新
+  const checkSize = () => {
+    setSize(window.innerWidth);
+  };
 
   useEffect(() => {
-    console.log("空数组,仅在初始化执行一次");
-  }, []);
-
-  console.log("组件渲染");
+    window.addEventListener("resize", checkSize);
+    console.log(size);
+    // 清理事件
+    return () => {
+      console.log("cleanup");
+      window.removeEventListener("resize", checkSize);
+    };
+  });
 
   return (
     <>
-      <h1>{value}</h1>
-      <button className="btn" onClick={() => setValue(value + 1)}>
-        点我
-      </button>
-
-      {/* 无关的操作  */}
-      <h1>{count}</h1>
-      <button className="btn" onClick={() => setCount(count + 1)}>
-        增加数量
-      </button>
+      <h1>window</h1>
+      <h2>{size} px</h2>
     </>
   );
 }
