@@ -1,30 +1,35 @@
 import { useState, useEffect } from "react";
 
-/** useEffect 的返回值
- * 1.return语句的作用是清理effect中的副作用，防止出现内存泄漏等问题
+/**
+ * useEffect 网络请求
+ *
+ * 特别注意:
+ * useEffect的回调函数使用async是无效的.
+ * 因为useEffect的返回值只能是undefine或清除函数
+ * 然后async函数总是返回一个promise
  */
 
-function App() {
-  const [size, setSize] = useState(window.innerWidth);
+const url = "http://jsonplaceholder.typicode.com/users";
 
-  const checkSize = () => {
-    setSize(window.innerWidth);
-  };
+function App() {
+  const [data, setData] = useState([]);
 
   useEffect(() => {
-    window.addEventListener("resize", checkSize);
-    console.log(size);
-    // 清理事件
-    return () => {
-      console.log("cleanup");
-      window.removeEventListener("resize", checkSize);
+    const fetchData = async () => {
+      const response = await fetch(url);
+      const result = await response.json();
+
+      setData(result);
     };
-  });
+
+    fetchData();
+  }, []);
 
   return (
     <>
-      <h1>window</h1>
-      <h2>{size} px</h2>
+      {data.map((item, i) => {
+        return <pre key={i}>{JSON.stringify(item)}</pre>;
+      })}
     </>
   );
 }
