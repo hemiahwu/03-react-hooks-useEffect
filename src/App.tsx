@@ -1,9 +1,18 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState, useEffect } from "react";
+import reactLogo from "./assets/react.svg";
+import "./App.css";
+/**
+ * 1.在React中，组件的渲染是由状态（state）和属性（props）的变化触发的
+ * 2.useEffect的目的是为了在组件渲染后执行副作用操作
+ * 3.所谓副作用，是指与组件渲染无关的操作，比如网络请求、修改DOM、订阅事件等
+ */
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    console.log("useEffect的目的是为了在组件渲染后执行副作用操作");
+  });
 
   return (
     <div className="App">
@@ -28,7 +37,7 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
